@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>한빛정밀 업무포털</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* 레이아웃: 상단 고정 메뉴 + 화면 하나씩(홈·출장 신청·교육 관리자) */
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --fg:#1d2430; --muted:#5d6675; --line:#d9ddd6;
+  --accent:#1f4e79; --accent-fg:#ffffff; --accent-soft:#e3ecf5; --warn:#a3341c; --ok:#21734a;
+  --display:"Gowun Batang",Georgia,serif; --body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151a21;--surface:#1d242d;--fg:#e6e9ee;--muted:#a0a9b6;--line:#333c48;--accent:#7fb0e0;--accent-fg:#0f1620;--accent-soft:#22324a;--warn:#f08a70;--ok:#6fcf9b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151a21;--surface:#1d242d;--fg:#e6e9ee;--muted:#a0a9b6;--line:#333c48;--accent:#7fb0e0;--accent-fg:#0f1620;--accent-soft:#22324a;--warn:#f08a70;--ok:#6fcf9b;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.65 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.inner{max-width:960px;margin:0 auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header .inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:12px}
+.brand{font:700 20px/1 var(--display);color:var(--fg);text-decoration:none;letter-spacing:.02em}
+.brand small{font:500 12px var(--body);color:var(--muted);margin-left:8px;letter-spacing:0}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:8px 12px;border-radius:6px;color:var(--muted);text-decoration:none;font-weight:500}
+nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
+nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:32px 56px}
+h1{font:700 28px/1.3 var(--display);margin:0 0 8px;text-wrap:balance}
+h2{font:700 19px/1.4 var(--display);margin:0 0 12px}
+.lead{color:var(--muted);max-width:62ch;margin:0}
+.view{display:grid;gap:24px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border-top:3px solid var(--accent);padding-top:10px}
+.steps li::before{content:counter(s);font:700 13px var(--body);color:var(--accent);display:block}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:14px}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.links a{display:block;padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);text-decoration:none}
+.links a b{color:var(--accent);display:block;margin-bottom:4px}
+.links a span{color:var(--muted);font-size:14px}
+.scroll{overflow-x:auto;min-width:0}
+table{border-collapse:collapse;width:100%}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.code{font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:6px;min-width:0}
+label{font-weight:500}
+input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;font:inherit;background:var(--bg);color:var(--fg)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button{padding:10px 18px;font:inherit;border:1px solid var(--line);border-radius:6px;cursor:pointer;background:var(--surface);color:var(--fg)}
+button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.note{color:var(--muted);font-size:13px;margin:12px 0 0}
+fieldset{border:0;margin:14px 0 0;padding:0}legend{font-weight:500;margin-bottom:6px;padding:0}.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}.opt{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);cursor:pointer;font-weight:400}.opt input{width:auto;margin:0;accent-color:var(--accent)}.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.err{color:var(--warn);min-height:1.4em;margin:8px 0 0}
+.ok{color:var(--ok)}
+.login{max-width:380px}
+.boardtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;background:var(--accent-soft);color:var(--warn)}
+footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:13px}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}h1{font-size:24px}.panel{padding:18px}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="gut"><div class="inner">
+  <a class="brand" href="#home">한빛정밀<small>업무포털</small></a>
+  <nav aria-label="주 메뉴"><a href="#home" data-v="home">홈</a><a href="#apply" data-v="apply">출장 신청</a><a href="#lms" data-v="lms">교육 관리자</a></nav>
+</div></header>
+
+<main class="gut"><div class="inner">
+
+<section class="view" id="v-home">
+  <div>
+    <h1>한빛정밀 임직원 업무포털</h1>
+    <p class="lead">출장 신청과 사내 교육 관리를 이 포털에서 합니다. 출장은 신청 후 팀장 승인을 거쳐 확정되고, 교육 관리자 화면에서는 부서별 법정의무교육 이수 현황을 봅니다.</p>
+  </div>
+  <div class="panel">
+    <h2>출장 처리 순서</h2>
+    <ol class="steps">
+      <li><b>출장 신청</b><span>출장자 또는 대리 신청자가 포털에 입력합니다</span></li>
+      <li><b>팀장 승인</b><span>소속 팀장이 일정과 목적을 확인합니다</span></li>
+      <li><b>출장</b><span>승인된 일정대로 다녀옵니다</span></li>
+      <li><b>정산</b><span>복귀 후 경비를 정산합니다</span></li>
+    </ol>
+  </div>
+  <div class="panel">
+    <h2>출장 구분</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>구분코드</th><th>출장 구분</th><th>승인</th></tr></thead>
+      <tbody>
+        <tr><td class="code">BT-01</td><td>국내 출장</td><td>팀장</td></tr>
+        <tr><td class="code">BT-02</td><td>해외 출장</td><td>팀장 · 경영지원팀</td></tr>
+        <tr><td class="code">BT-03</td><td>당일 외근</td><td>팀장</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="links">
+    <a href="#apply"><b>출장 신청 입력 폼</b><span>부서·출장지·구분·인원·일정을 입력해 신청합니다</span></a>
+    <a href="#lms"><b>교육 관리자</b><span>경영지원팀 전용 · 로그인 후 법정의무교육 이수 현황을 봅니다</span></a>
+  </div>
+</section>
+
+<section class="view" id="v-apply" hidden>
+  <div><h1>출장 신청 입력 폼</h1><p class="lead">2026년 출장 신청 · <span aria-hidden="true">*</span> 표시는 필수 칸입니다.</p></div>
+  <div class="panel" id="formCard">
+    <form id="enrollmentForm" novalidate>
+      <div class="grid2">
+        <div class="field"><label for="team">조 번호 *</label><input id="team" name="team" type="number" min="1" max="99" step="1" required></div>
+        <div class="field"><label for="person">이름 (선택)</label><input id="person" name="person" type="text"></div>
+        <div class="field"><label for="customer">출장자 부서 *</label><input id="customer" name="customer" type="text" required></div>
+        <div class="field"><label for="sales">출장지 *</label><input id="sales" name="sales" type="text" required></div>
+        <div class="field"><label for="count">인원 *</label><input id="count" name="count" type="number" min="1" step="1" required></div>
+        <div class="field"></div>
+        <div class="field"><label for="start">출발일 *</label><input id="start" name="start" type="date" min="2026-01-01" max="2026-12-31" required></div>
+        <div class="field"><label for="end">복귀일 *</label><input id="end" name="end" type="date" min="2026-01-01" max="2026-12-31" required></div>
+      </div>
+      <fieldset class="field course"><legend>출장 구분 (구분코드) *</legend><div class="opts"><label class="opt"><input type="radio" name="course" id="course-BT-01" value="BT-01"><span>국내 출장 (BT-01)</span></label><label class="opt"><input type="radio" name="course" id="course-BT-02" value="BT-02"><span>해외 출장 (BT-02)</span></label><label class="opt"><input type="radio" name="course" id="course-BT-03" value="BT-03"><span>당일 외근 (BT-03)</span></label></div></fieldset>
+      <p class="err" id="error" role="alert"></p>
+      <div class="btns"><button class="primary" type="submit">제출</button><button type="reset">모두 지우기</button></div>
+      <p class="note">입력은 화면 확인용이며 서버로 보내거나 저장하지 않습니다. 개인 연락처·결제 정보는 입력하지 마세요.</p>
+    </form>
+  </div>
+  <div class="panel" id="done" hidden aria-live="polite">
+    <h2 class="ok">신청 완료</h2>
+    <p>신청번호 <b class="code" id="rno"></b></p>
+    <div class="scroll"><table><tbody id="summary"></tbody></table></div>
+    <p class="note">이 화면은 확인용입니다. 입력 내용은 서버로 보내거나 저장하지 않습니다.</p>
+    <div class="btns"><button id="again" type="button">새로 입력</button></div>
+  </div>
+</section>
+
+<section class="view" id="v-lms" hidden>
+  <div class="panel login" id="loginCard">
+    <h2>교육 관리자 로그인</h2>
+    <p class="note" style="margin:0 0 14px">경영지원팀 전용입니다. 아이디와 접속코드는 담당자가 직접 입력합니다.</p>
+    <form id="loginForm">
+      <div class="field"><label for="uid">아이디</label><input id="uid" type="text" autocomplete="off" required></div>
+      <div class="field" style="margin-top:10px"><label for="code">접속코드</label><input id="code" type="password" autocomplete="off" required></div>
+      <p class="err" id="loginError" role="alert"></p>
+      <div class="btns"><button class="primary" type="submit">로그인</button></div>
+    </form>
+  </div>
+  <div class="panel" id="board" hidden aria-live="polite">
+    <div class="boardtop">
+      <div><h2 style="margin:0">법정의무교육 이수 현황</h2><p class="note" style="margin:4px 0 0">2026년 하반기 산업안전보건 정기교육 · 이수 마감 2026-11-30 · 기준 2026-11-20 09:00</p></div>
+      <div class="note" style="margin:0">hanbit 로그인 중 · <button id="logout" type="button">로그아웃</button></div>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>부서</th><th>대상 인원</th><th>이수 인원</th><th>이수율</th><th>미접속</th></tr></thead>
+      <tbody id="boardRows"></tbody>
+    </table></div>
+    <p class="note">이수율 = 이수 인원 ÷ 대상 인원. 미접속 = 교육이 열린 뒤 한 번도 접속하지 않은 인원.</p>
+  </div>
+</section>
+
+</div></main>
+<footer class="gut"><div class="inner">한빛정밀 업무포털 · 출장 신청과 교육 관리</div></footer>
+
+<script>
+(function(){
+  var ROWS='CiAgICAgICAgPHRyPjx0ZD7smIHsl4XtjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xODwvdGQ+PHRkIGNsYXNzPSJudW0iPjE1PC90ZD48dGQgY2xhc3M9Im51bSI+ODMuMyU8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xPC90ZD48L3RyPgogICAgICAgIDx0cj48dGQ+7IOd7IKw7YyAPC90ZD48dGQgY2xhc3M9Im51bSI+NDI8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xNzwvdGQ+PHRkIGNsYXNzPSJudW0iPjQwLjUlIDxzcGFuIGNsYXNzPSJwaWxsIj7rgq7snYw8L3NwYW4+PC90ZD48dGQgY2xhc3M9Im51bSI+MTI8L3RkPjwvdHI+CiAgICAgICAgPHRyPjx0ZD7tkojsp4jrs7Tspp3tjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xNTwvdGQ+PHRkIGNsYXNzPSJudW0iPjk8L3RkPjx0ZCBjbGFzcz0ibnVtIj42MC4wJTwvdGQ+PHRkIGNsYXNzPSJudW0iPjI8L3RkPjwvdHI+CiAgICAgICAgPHRyPjx0ZD7qtazrp6TsnpDsnqztjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj44PC90ZD48dGQgY2xhc3M9Im51bSI+MzwvdGQ+PHRkIGNsYXNzPSJudW0iPjM3LjUlIDxzcGFuIGNsYXNzPSJwaWxsIj7rgq7snYw8L3NwYW4+PC90ZD48dGQgY2xhc3M9Im51bSI+NDwvdGQ+PC90cj4KICAgICAgICA8dHI+PHRkPuqyveyYgeyngOybkO2MgDwvdGQ+PHRkIGNsYXNzPSJudW0iPjEyPC90ZD48dGQgY2xhc3M9Im51bSI+MTE8L3RkPjx0ZCBjbGFzcz0ibnVtIj45MS43JTwvdGQ+PHRkIGNsYXNzPSJudW0iPjA8L3RkPjwvdHI+CiAgICAgIA==';
+  var views=['home','apply','lms'];
+  function route(){
+    var v=(location.hash||'#home').slice(1); if(views.indexOf(v)<0) v='home';
+    views.forEach(function(n){document.getElementById('v-'+n).hidden=(n!==v);});
+    document.querySelectorAll('nav a').forEach(function(a){if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',route); route();
+
+  var form=document.getElementById('enrollmentForm');
+  var keys=['team','person','customer','course','count','start','end','sales'];
+  var labels=['조 번호','이름','출장자 부서','출장 구분 (구분코드)','인원','출발일','복귀일','출장지'];
+  var need={team:'조 번호',customer:'출장자 부서',sales:'출장지',course:'출장 구분',count:'인원',start:'출발일',end:'복귀일'};
+  function courseEl(){return form.querySelector('input[name="course"]:checked');}
+  function val(k){if(k==='course'){var c=courseEl();return c?c.value:'';}return document.getElementById(k).value.trim();}
+  function pad(n){return String(n).padStart(2,'0');}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var err='';
+    Object.keys(need).forEach(function(k){if(!err&&!val(k)) err=need[k]+' 칸을 채워 주세요.';});
+    if(!err&&!/^\d+$/.test(val('team'))) err='조 번호는 숫자만 넣어 주세요.';
+    if(!err&&!(/^\d+$/.test(val('count'))&&Number(val('count'))>=1)) err='인원은 1 이상의 숫자만 넣어 주세요.';
+    if(!err&&(!val('start').startsWith('2026-')||!val('end').startsWith('2026-'))) err='출발일과 복귀일은 2026년 날짜로 넣어 주세요.';
+    if(!err&&val('end')<val('start')) err='복귀일이 출발일보다 빠릅니다.';
+    document.getElementById('error').textContent=err; if(err) return;
+    var d=new Date();
+    document.getElementById('rno').textContent='TRV-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());
+    var tb=document.getElementById('summary'); tb.replaceChildren();
+    keys.forEach(function(k,i){var tr=document.createElement('tr'),th=document.createElement('th'),td=document.createElement('td');th.textContent=labels[i];td.textContent=k==='course'?courseEl().nextElementSibling.textContent:(val(k)||'-');tr.append(th,td);tb.append(tr);});
+    document.getElementById('formCard').hidden=true; document.getElementById('done').hidden=false;
+  });
+  form.addEventListener('reset',function(){document.getElementById('error').textContent='';});
+  document.getElementById('again').addEventListener('click',function(){form.reset();document.getElementById('done').hidden=true;document.getElementById('formCard').hidden=false;});
+
+  document.getElementById('loginForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok=val('uid')==='hanbit'&&val('code')==='1120';
+    document.getElementById('loginError').textContent=ok?'':'아이디 또는 접속코드가 맞지 않습니다. 담당자에게 받은 값을 다시 입력해 주세요.';
+    if(ok){document.getElementById('boardRows').innerHTML=new TextDecoder().decode(Uint8Array.from(atob(ROWS),function(c){return c.charCodeAt(0);}));document.getElementById('loginCard').hidden=true;document.getElementById('board').hidden=false;}
+  });
+  document.getElementById('logout').addEventListener('click',function(){document.getElementById('loginForm').reset();document.getElementById('boardRows').innerHTML='';document.getElementById('board').hidden=true;document.getElementById('loginCard').hidden=false;});
+})();
+</script>
+</body>
+</html>
