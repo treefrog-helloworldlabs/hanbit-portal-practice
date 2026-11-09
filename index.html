@@ -170,7 +170,7 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
   var ROWS='CiAgICAgICAgPHRyPjx0ZD7smIHsl4XtjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xODwvdGQ+PHRkIGNsYXNzPSJudW0iPjE1PC90ZD48dGQgY2xhc3M9Im51bSI+ODMuMyU8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xPC90ZD48L3RyPgogICAgICAgIDx0cj48dGQ+7IOd7IKw7YyAPC90ZD48dGQgY2xhc3M9Im51bSI+NDI8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xNzwvdGQ+PHRkIGNsYXNzPSJudW0iPjQwLjUlIDxzcGFuIGNsYXNzPSJwaWxsIj7rgq7snYw8L3NwYW4+PC90ZD48dGQgY2xhc3M9Im51bSI+MTI8L3RkPjwvdHI+CiAgICAgICAgPHRyPjx0ZD7tkojsp4jrs7Tspp3tjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj4xNTwvdGQ+PHRkIGNsYXNzPSJudW0iPjk8L3RkPjx0ZCBjbGFzcz0ibnVtIj42MC4wJTwvdGQ+PHRkIGNsYXNzPSJudW0iPjI8L3RkPjwvdHI+CiAgICAgICAgPHRyPjx0ZD7qtazrp6TsnpDsnqztjIA8L3RkPjx0ZCBjbGFzcz0ibnVtIj44PC90ZD48dGQgY2xhc3M9Im51bSI+MzwvdGQ+PHRkIGNsYXNzPSJudW0iPjM3LjUlIDxzcGFuIGNsYXNzPSJwaWxsIj7rgq7snYw8L3NwYW4+PC90ZD48dGQgY2xhc3M9Im51bSI+NDwvdGQ+PC90cj4KICAgICAgICA8dHI+PHRkPuqyveyYgeyngOybkO2MgDwvdGQ+PHRkIGNsYXNzPSJudW0iPjEyPC90ZD48dGQgY2xhc3M9Im51bSI+MTE8L3RkPjx0ZCBjbGFzcz0ibnVtIj45MS43JTwvdGQ+PHRkIGNsYXNzPSJudW0iPjA8L3RkPjwvdHI+CiAgICAgIA==';
   var views=['home','apply','lms'];
   var titles={home:'한빛정밀 업무포털',apply:'출장 신청 — 한빛정밀 업무포털',lms:'교육 관리자 — 한빛정밀 업무포털'};
-  function loggedIn(){try{return sessionStorage.getItem('hanbitLms')==='1';}catch(e){return false;}}
+  function loggedIn(){try{return localStorage.getItem('hanbitLms')==='1';}catch(e){return false;}}
   function showBoard(){document.getElementById('boardRows').innerHTML=new TextDecoder().decode(Uint8Array.from(atob(ROWS),function(c){return c.charCodeAt(0);}));document.getElementById('loginCard').hidden=true;document.getElementById('board').hidden=false;}
   function route(){
     var v=(location.hash||'#home').slice(1); if(views.indexOf(v)<0) v='home';
@@ -211,9 +211,9 @@ footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);fo
     e.preventDefault();
     var ok=val('uid')==='hanbit'&&val('code')==='1120';
     document.getElementById('loginError').textContent=ok?'':'아이디 또는 접속코드가 맞지 않습니다. 담당자에게 받은 값을 다시 입력해 주세요.';
-    if(ok){try{sessionStorage.setItem('hanbitLms','1');}catch(e){}showBoard();}
+    if(ok){try{localStorage.setItem('hanbitLms','1');}catch(e){}showBoard();}
   });
-  document.getElementById('logout').addEventListener('click',function(){try{sessionStorage.removeItem('hanbitLms');}catch(e){}document.getElementById('loginForm').reset();document.getElementById('boardRows').innerHTML='';document.getElementById('board').hidden=true;document.getElementById('loginCard').hidden=false;});
+  document.getElementById('logout').addEventListener('click',function(){try{localStorage.removeItem('hanbitLms');}catch(e){}document.getElementById('loginForm').reset();document.getElementById('boardRows').innerHTML='';document.getElementById('board').hidden=true;document.getElementById('loginCard').hidden=false;});
 })();
 </script>
 </body>
